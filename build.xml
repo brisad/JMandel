@@ -1,0 +1,65 @@
+<project name="JMandel" basedir="." default="main">
+    <property name="main.src" value="src" />
+    <property name="test.src" value="test" />
+    <property name="build" value="build" />
+    <property name="main.classes" value="${build}/classes" />
+    <property name="test.classes" value="${build}/test-classes" />
+    <property name="jar" value="${build}/jar" />
+    <property name="lib.dir" value="/usr/share/java" />
+
+    <property name="main-class" value="jmandel.MandelbrotViewer" />
+
+    <target name="clean">
+        <delete dir="${build}" />
+        <delete>
+            <fileset dir="." includes="TEST-*.txt" />
+        </delete>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${main.classes}" />
+        <javac srcdir="${main.src}" destdir="${main.classes}" includeantruntime="false" />
+    </target>
+
+    <target name="compile-test">
+        <mkdir dir="${test.classes}" />
+        <javac srcdir="${test.src}" destdir="${test.classes}" includeantruntime="false">
+            <classpath path="${main.classes}" />
+            <classpath location="${lib.dir}/junit4.jar" />
+        </javac>
+    </target>
+
+    <target name="test" depends="compile, compile-test">
+        <junit printsummary="yes" haltonfailure="yes" haltonerror="yes">
+            <classpath location="${main.classes}" />
+            <classpath location="${test.classes}" />
+            <classpath location="${lib.dir}/junit4.jar" />
+
+            <formatter type="plain" />
+
+            <batchtest>
+                <fileset dir="${test.src}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar}" />
+        <jar destfile="${jar}/${ant.project.name}.jar" basedir="${main.classes}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar}/${ant.project.name}.jar" fork="true" />
+    </target>
+
+    <target name="clean-build" depends="clean, jar" />
+
+    <target name="main" depends="clean, run" />
+</project>
