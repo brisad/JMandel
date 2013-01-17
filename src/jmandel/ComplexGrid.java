@@ -35,7 +35,7 @@ public class ComplexGrid {
             imag = iMin;
         } else {
             real = (rMax - rMin) / (width - 1) * rIndex + rMin;
-            imag = (iMax - iMin) / (width - 1) * iIndex + iMin;
+            imag = (iMax - iMin) / (height - 1) * iIndex + iMin;
         }
         return new Complex(real, imag);
     }

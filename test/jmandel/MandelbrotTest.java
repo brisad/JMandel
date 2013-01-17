@@ -32,9 +32,9 @@ public class MandelbrotTest {
 
     @Test
     public void generate_ReturnsCorrectSize() {
-        Mandelbrot m = new Mandelbrot(new ComplexGrid(-1, 1, -1, 1, 3, 3));
+        Mandelbrot m = new Mandelbrot(new ComplexGrid(-1, 1, -1, 1, 3, 9));
         MandelbrotResult result = m.generate();
-        assertEquals(new Dimension(3, 3), result.getSize());
+        assertEquals(new Dimension(3, 9), result.getSize());
     }
 
     @Test

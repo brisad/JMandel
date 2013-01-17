@@ -43,17 +43,17 @@ public class ComplexGridTest {
 
     @Test
     public void index_UpperIndexFromNormalGrid_ReturnsComplexCoordinates() {
-        ComplexGrid grid = new ComplexGrid(0, 1, 0, 1, 2, 2);
+        ComplexGrid grid = new ComplexGrid(0, 1, 0, 1, 2, 5);
         Complex expected = new Complex(1, 1);
-        Complex actual = grid.index(1, 1);
+        Complex actual = grid.index(1, 4);
         assertEquals("Incorrect coordinates", expected, actual);
     }
 
     @Test
     public void index_MiddleIndexFromNormalGrid_ReturnsComplexCoordinates() {
-        ComplexGrid grid = new ComplexGrid(-1, 1, -1, 1, 3, 3);
+        ComplexGrid grid = new ComplexGrid(-1, 1, -1, 1, 3, 9);
         Complex expected = new Complex(0, 0);
-        Complex actual = grid.index(1, 1);
+        Complex actual = grid.index(1, 4);
         assertEquals("Incorrect coordinates", expected, actual);
     }
 

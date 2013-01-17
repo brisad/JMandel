@@ -17,7 +17,7 @@ public class Mandelbrot {
         int result[][] = new int[d.height][d.width];
 
         for (int y = 0; y < d.height; y++) {
-            for (int x = 0; x < d.height; x++) {
+            for (int x = 0; x < d.width; x++) {
                 Complex c = grid.index(x, y);
                 result[y][x] = iterations(c, DEF_NUM_ITER);
             }
