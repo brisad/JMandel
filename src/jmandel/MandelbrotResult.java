@@ -7,9 +7,11 @@ import java.awt.image.BufferedImage;
 public class MandelbrotResult {
 
     private final int[][] fractal;
+    private final int maxValue;
 
     public MandelbrotResult(int[][] fractal) {
         this.fractal = fractal;
+        maxValue = findMax();
     }
 
     public Dimension getSize() {
@@ -24,14 +26,26 @@ public class MandelbrotResult {
         return fractal;
     }
 
+    private int findMax() {
+        int max = fractal[0][0];
+        for (int y = 0; y < fractal.length; y++) {
+            for (int x = 0; x < fractal[y].length; x++) {
+                if (fractal[y][x] > max)
+                    max = fractal[y][x];
+            }
+        }
+        return max;
+    }
+
     public BufferedImage toImage() {
 
         BufferedImage image = new BufferedImage(fractal[0].length,
                                                 fractal.length,
-                                                BufferedImage.TYPE_INT_ARGB);
+                                                BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < fractal.length; y++) {
             for (int x = 0; x < fractal[y].length; x++) {
-                image.setRGB(x, y, fractal[y][x]);
+                image.setRGB(x, y, (int)Math.round(255 * fractal[y][x] /
+                                                   (double)maxValue));
             }
         }
 

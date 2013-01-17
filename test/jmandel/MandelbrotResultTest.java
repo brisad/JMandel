@@ -11,6 +11,8 @@ import org.junit.runners.JUnit4;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import java.awt.Color;
+
 /**
  * Tests for {@link MandelbrotResult}.
  *
@@ -63,10 +65,11 @@ public class MandelbrotResultTest {
     }
 
     @Test
-    public void toImage_ReturnsBufferedImageWithColorsSameAsFractalData() {
+    public void toImage_Default_ReturnsBufferedImageWithScaledBluePixels() {
         MandelbrotResult mandelbrotResult = new MandelbrotResult(fractal3x2);
         BufferedImage image = mandelbrotResult.toImage();
-        int[] expected = {0, 1, 3, 7, 2, 5};
+        int[] expected = {(0xff<<24), (0xff<<24) + 36, (0xff<<24) + 109,
+                          (0xff<<24) + 255, (0xff<<24) + 73, (0xff<<24) + 182};
         int[] actual = image.getRGB(0, 0, 3, 2, null, 0, 3);
         assertArrayEquals("RGB data differs", expected, actual);
     }
