@@ -36,7 +36,7 @@ public class ComplexGridTest {
     @Test
     public void index_LowerIndexFromNormalGrid_ReturnsComplexCoordinates() {
         ComplexGrid grid = new ComplexGrid(-1, 1, -1, 1, 20, 40);
-        Complex expected = new Complex(-1, -1);
+        Complex expected = new Complex(-1, 1);
         Complex actual = grid.index(0, 0);
         assertEquals("Incorrect coordinates", expected, actual);
     }
@@ -44,7 +44,7 @@ public class ComplexGridTest {
     @Test
     public void index_UpperIndexFromNormalGrid_ReturnsComplexCoordinates() {
         ComplexGrid grid = new ComplexGrid(0, 1, 0, 1, 2, 5);
-        Complex expected = new Complex(1, 1);
+        Complex expected = new Complex(1, 0);
         Complex actual = grid.index(1, 4);
         assertEquals("Incorrect coordinates", expected, actual);
     }
