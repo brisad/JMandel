@@ -4,12 +4,12 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-
+import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-public class MandelbrotPanel extends JPanel implements  MouseMotionListener {
+public class MandelbrotPanel extends JPanel implements MouseMotionListener {
 
     private Image fractal;
     private ComplexGrid grid;
@@ -32,9 +32,14 @@ public class MandelbrotPanel extends JPanel implements  MouseMotionListener {
         listeners.add(l);
     }
 
+    private Complex pointToComplexCoordinate(Point p) {
+        return grid.index(p.x * grid.getSize().width / getWidth(),
+                          p.y * grid.getSize().height / getHeight());
+    }
+
     public void mouseMoved(MouseEvent e) {
         for (ComplexGridPositionListener l : listeners) {
-            l.ComplexGridPositionUpdate(grid.index(e.getX(), e.getY()));
+            l.ComplexGridPositionUpdate(pointToComplexCoordinate(e.getPoint()));
         }
     }
 
