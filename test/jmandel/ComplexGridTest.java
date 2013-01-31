@@ -1,11 +1,14 @@
 package jmandel;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.HashSet;
 import java.awt.Dimension;
 
 /**
@@ -55,6 +58,29 @@ public class ComplexGridTest {
         Complex expected = new Complex(0, 0);
         Complex actual = grid.index(1, 4);
         assertEquals("Incorrect coordinates", expected, actual);
+    }
+
+    @Test
+    public void equals_SameData_ReturnsTrue() {
+        ComplexGrid grid1 = new ComplexGrid(-1, 1, -2, 3, 7, 11);
+        ComplexGrid grid2 = new ComplexGrid(-1, 1, -2, 3, 7, 11);
+        assertEquals("Should be same", grid1, grid2);
+    }
+
+    @Test
+    public void equals_DifferentData_ReturnsFalse() {
+        ComplexGrid grid1 = new ComplexGrid(-1, 1, -2, 3, 7, 11);
+        ComplexGrid grid2 = new ComplexGrid(1, -1, -2, 3, 7, 11);
+        assertFalse("Should be different", grid1.equals(grid2));
+    }
+
+    @Test
+    public void hashCode_SameGridInHashSet_ContainsReturnsTrue() {
+        ComplexGrid grid1 = new ComplexGrid(-1, 1, -2, 3, 7, 11);
+        ComplexGrid grid2 = new ComplexGrid(-1, 1, -2, 3, 7, 11);
+        HashSet<ComplexGrid> coll = new HashSet<ComplexGrid>();
+        coll.add(grid1);
+        assertTrue(coll.contains(grid2));
     }
 
     public static void main(String[] args) {
