@@ -2,16 +2,18 @@ package jmandel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.HashSet;
+
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-
-import java.awt.Color;
 
 /**
  * Tests for {@link MandelbrotResult}.
@@ -72,6 +74,29 @@ public class MandelbrotResultTest {
                           (0xff<<24) + 255, (0xff<<24) + 73, (0xff<<24) + 182};
         int[] actual = image.getRGB(0, 0, 3, 2, null, 0, 3);
         assertArrayEquals("RGB data differs", expected, actual);
+    }
+
+    @Test
+    public void equals_SameContents_ReturnsTrue() {
+        MandelbrotResult result1 = new MandelbrotResult(fractal2x2);
+        MandelbrotResult result2 = new MandelbrotResult(fractal2x2);
+        assertEquals("Should be same", result1, result2);
+    }
+
+    @Test
+    public void equals_DifferentContents_ReturnsFalse() {
+        MandelbrotResult result1 = new MandelbrotResult(fractal2x2);
+        MandelbrotResult result2 = new MandelbrotResult(fractal3x2);
+        assertFalse(result1.equals(result2));
+    }
+
+    @Test
+    public void hashCode_SameResultInHashSet_ContainsReturnsTrue() {
+        MandelbrotResult result1 = new MandelbrotResult(fractal2x2);
+        MandelbrotResult result2 = new MandelbrotResult(fractal2x2);
+        HashSet<MandelbrotResult> coll = new HashSet<MandelbrotResult>();
+        coll.add(result1);
+        assertTrue(coll.contains(result2));
     }
 
     public static void main(String[] args) {

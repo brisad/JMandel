@@ -1,5 +1,7 @@
 package jmandel;
 
+import java.util.Arrays;
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -50,5 +52,19 @@ public class MandelbrotResult {
         }
 
         return image;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof MandelbrotResult))
+          return false;
+        MandelbrotResult otherResult = (MandelbrotResult) other;
+        return Arrays.deepEquals(fractal, otherResult.fractal)
+            && maxValue == otherResult.maxValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return fractal.hashCode() * 31 + maxValue;
     }
 }
