@@ -4,10 +4,10 @@ import java.awt.Dimension;
 
 public class ComplexGrid {
 
-    private final double rMin;
-    private final double rMax;
-    private final double iMin;
-    private final double iMax;
+    public final double rMin;
+    public final double rMax;
+    public final double iMin;
+    public final double iMax;
     private final int width;
     private final int height;
 
