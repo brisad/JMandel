@@ -11,8 +11,8 @@ import java.awt.event.MouseMotionListener;
 
 public class MandelbrotPanel extends JPanel implements MouseMotionListener {
 
-    private Image fractal;
-    private ComplexGrid grid;
+    private Image fractalImage;
+    private MandelbrotZoomer zoomer;
     private ArrayList<ComplexGridPositionListener> listeners;
 
     public MandelbrotPanel() {
@@ -20,11 +20,15 @@ public class MandelbrotPanel extends JPanel implements MouseMotionListener {
         addMouseMotionListener(this);
     }
 
-    public void generateFractal(double rMin, double rMax,
-                                double iMin, double iMax) {
-        grid = new ComplexGrid(rMin, rMax, iMin, iMax,
-                               getWidth(), getHeight());
-        fractal = new Mandelbrot(grid).generate().toImage();
+    public void init(double rMin, double rMax, double iMin, double iMax) {
+        zoomer = new MandelbrotZoomer(new ComplexGrid(rMin, rMax, iMin, iMax,
+                                                      getWidth(),
+                                                      getHeight()));
+    }
+
+    public void generateAndDisplayFractal() {
+        zoomer.generate();
+        fractalImage = zoomer.getMandelbrotResult().toImage();
         repaint();
     }
 
@@ -33,6 +37,7 @@ public class MandelbrotPanel extends JPanel implements MouseMotionListener {
     }
 
     private Complex pointToComplexCoordinate(Point p) {
+        ComplexGrid grid = zoomer.getComplexGrid();
         return grid.index(p.x * grid.getSize().width / getWidth(),
                           p.y * grid.getSize().height / getHeight());
     }
@@ -49,6 +54,6 @@ public class MandelbrotPanel extends JPanel implements MouseMotionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-        g2.drawImage(fractal, 0, 0, getWidth(), getHeight(), null);
+        g2.drawImage(fractalImage, 0, 0, getWidth(), getHeight(), null);
     }
 }

@@ -10,6 +10,11 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
     private MandelbrotPanel mandelPanel;
     private JLabel statusLabel;
 
+    private static final double RMINSTART = -2.5;
+    private static final double RMAXSTART = 1;
+    private static final double IMINSTART = -1;
+    private static final double IMAXSTART = 1;
+
     public static void main(String[] args) {
         new MandelbrotViewer().createAndShowGUI();
     }
@@ -37,7 +42,8 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
         frame.setSize(600, 400);
         frame.setVisible(true);
 
-        mandelPanel.generateFractal(-2.5, 1, -1, 1);
+        mandelPanel.init(RMINSTART, RMAXSTART, IMINSTART, IMAXSTART);
+        mandelPanel.generateAndDisplayFractal();
     }
 
     public void ComplexGridPositionUpdate(Complex c) {
