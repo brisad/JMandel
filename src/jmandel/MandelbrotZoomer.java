@@ -30,6 +30,11 @@ public class MandelbrotZoomer {
                                grid.getSize().width, grid.getSize().height);
     }
 
+    public void setResolution(int width, int height) {
+        grid = new ComplexGrid(grid.rMin, grid.rMax, grid.iMin, grid.iMax,
+                               width, height);
+    }
+
     public ComplexGrid getComplexGrid() {
         return grid;
     }

@@ -66,6 +66,14 @@ public class MandelbrotZoomerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void setResolution_DefaultGrid_ChangesComplexGridWidthAndHeight() {
+        zoomer.setResolution(100, 200);
+        ComplexGrid expected = new ComplexGrid(-2.5, 1, -1, 1, 100, 200);
+        ComplexGrid actual = zoomer.getComplexGrid();
+        assertEquals(expected, actual);
+    }
+
     public static void main(String[] args) {
         org.junit.runner.JUnitCore.main("MandelbrotZoomerTest");
     }

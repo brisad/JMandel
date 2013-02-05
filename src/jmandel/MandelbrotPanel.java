@@ -58,6 +58,7 @@ public class MandelbrotPanel extends JPanel
 
     public void zoom(double factor) {
         if (selectedCoordinates != null) {
+            zoomer.setResolution(getWidth(), getHeight());
             zoomer.zoom(factor, selectedCoordinates);
             generateAndDisplayFractal();
         }
