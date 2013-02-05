@@ -4,6 +4,8 @@ public final class Complex {
     public final double real;
     public final double imag;
 
+    private final static double TOLERANCE = 1e-9;
+
     public Complex(double real, double imag) {
         this.real = real;
         this.imag = imag;
@@ -14,7 +16,8 @@ public final class Complex {
         boolean result = false;
         if (other instanceof Complex) {
             Complex that = (Complex) other;
-            result = this.real == that.real && this.imag == that.imag;
+            result = Math.abs(this.real - that.real) < TOLERANCE
+                && Math.abs(this.imag - that.imag) < TOLERANCE;
         }
         return result;
     }

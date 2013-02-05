@@ -21,8 +21,8 @@ public class ComplexTest {
 
     @Test
     public void equals_SameComplex_ReturnsTrue() {
-        Complex z1 = new Complex(1, 2);
-        Complex z2 = new Complex(1, 2);
+        Complex z1 = new Complex(0.3, 2);
+        Complex z2 = new Complex(3*0.1, 2);
         assertEquals("Should be same", z1, z2);
     }
 
