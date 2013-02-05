@@ -29,9 +29,25 @@ public class ComplexGridTest {
     }
 
     @Test
-    public void index_PointFromDegenerateGrid_ReturnsComplexCoordinates() {
+    public void index_PointOnDegenerateGrid_ReturnsComplexCoordinates() {
         ComplexGrid grid = new ComplexGrid(1, 1, 2, 2, 1, 1);
         Complex expected = new Complex(1, 2);
+        Complex actual = grid.index(0, 0);
+        assertEquals("Incorrect coordinates", expected, actual);
+    }
+
+    @Test
+    public void index_PointOnDegenerateRealAxis_ReturnsComplexCoordinates() {
+        ComplexGrid grid = new ComplexGrid(1, 1, 0, 2, 1, 2);
+        Complex expected = new Complex(1, 2);
+        Complex actual = grid.index(0, 0);
+        assertEquals("Incorrect coordinates", expected, actual);
+    }
+
+    @Test
+    public void index_PointOnDegenerateImagAxis_ReturnsComplexCoordinates() {
+        ComplexGrid grid = new ComplexGrid(0, 1, 2, 2, 2, 1);
+        Complex expected = new Complex(0, 2);
         Complex actual = grid.index(0, 0);
         assertEquals("Incorrect coordinates", expected, actual);
     }
