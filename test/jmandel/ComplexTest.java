@@ -34,7 +34,7 @@ public class ComplexTest {
     }
 
     @Test
-    public void hashcode_SameComplexInHashSet_ContainsReturnsTrue() {
+    public void hashCode_SameComplexInHashSet_ContainsReturnsTrue() {
         Complex z1 = new Complex(1, 2);
         Complex z2 = new Complex(1, 2);
         HashSet<Complex> coll = new HashSet<Complex>();

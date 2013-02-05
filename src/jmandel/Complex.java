@@ -24,7 +24,8 @@ public final class Complex {
 
     @Override
     public int hashCode() {
-        return (int)((real * 7) + imag) * 31;
+        return Double.valueOf(real).hashCode() * 31 +
+            Double.valueOf(imag).hashCode();
     }
 
     @Override

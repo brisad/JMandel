@@ -64,10 +64,10 @@ public class ComplexGrid {
 
     @Override
     public int hashCode() {
-        return (int)(Math.pow(31, 5) * rMin +
-                     Math.pow(31, 4) * rMax +
-                     Math.pow(31, 3) * iMin +
-                     Math.pow(31, 2) * iMax +
-                     31 * width + height);
+        return (int)Math.pow(31, 5) * Double.valueOf(rMin).hashCode() +
+            (int)Math.pow(31, 4) * Double.valueOf(rMax).hashCode() +
+            (int)Math.pow(31, 3) * Double.valueOf(iMin).hashCode() +
+            (int)Math.pow(31, 2) * Double.valueOf(iMax).hashCode() +
+            31 * width + height;
     }
 }
