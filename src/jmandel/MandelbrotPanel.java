@@ -18,14 +18,14 @@ public class MandelbrotPanel extends JPanel
 
     private Image fractalImage;
     private MandelbrotZoomer zoomer;
-    private ArrayList<ComplexGridPositionListener> listeners;
+    private ArrayList<MandelbrotPanelListener> listeners;
 
     private enum SelectionState { NONE, POINT, RECTANGLE };
     private Selection selection;
     private int lastButtonDown;
 
     public MandelbrotPanel() {
-        listeners = new ArrayList<ComplexGridPositionListener>();
+        listeners = new ArrayList<MandelbrotPanelListener>();
         addMouseMotionListener(this);
         addMouseListener(this);
     }
@@ -47,7 +47,7 @@ public class MandelbrotPanel extends JPanel
         repaint();
     }
 
-    public void addComplexGridPositionListener(ComplexGridPositionListener l) {
+    public void addMandelbrotPanelListener(MandelbrotPanelListener l) {
         listeners.add(l);
     }
 
@@ -85,9 +85,9 @@ public class MandelbrotPanel extends JPanel
     }
 
     public void mouseMoved(MouseEvent e) {
-        for (ComplexGridPositionListener l : listeners) {
+        for (MandelbrotPanelListener l : listeners) {
             Complex coordinates = pointToComplexCoordinates(e.getPoint());
-            l.ComplexGridPositionUpdate(coordinates);
+            l.mousePositionUpdate(coordinates);
         }
     }
 

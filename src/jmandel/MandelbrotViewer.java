@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class MandelbrotViewer implements ComplexGridPositionListener {
+public class MandelbrotViewer implements MandelbrotPanelListener {
 
     private MandelbrotPanel mandelPanel;
     private JLabel statusLabel;
@@ -35,7 +35,7 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mandelPanel = new MandelbrotPanel();
-        mandelPanel.addComplexGridPositionListener(this);
+        mandelPanel.addMandelbrotPanelListener(this);
 
         JPanel buttonPanel = createButtonPanel();
         JPanel statusPanel = new JPanel();
@@ -103,7 +103,7 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
         return buttonPanel;
     }
 
-    public void ComplexGridPositionUpdate(Complex c) {
+    public void mousePositionUpdate(Complex c) {
         statusLabel.setText(c.toString());
     }
 }
