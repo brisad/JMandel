@@ -37,6 +37,10 @@ public class MandelbrotPanel extends JPanel
         selection = new Selection();
     }
 
+    public void updateResolution() {
+        zoomer.setResolution(getWidth(), getHeight());
+    }
+
     public void generateAndDisplayFractal() {
         zoomer.generate();
         fractalImage = zoomer.getMandelbrotResult().toImage();
@@ -63,7 +67,7 @@ public class MandelbrotPanel extends JPanel
 
     public void zoom(double factor) {
         if (selection.state != SelectionState.NONE) {
-            zoomer.setResolution(getWidth(), getHeight());
+            updateResolution();
             zoomer.zoom(factor, selection.getCenter());
             generateAndDisplayFractal();
         }
@@ -71,7 +75,7 @@ public class MandelbrotPanel extends JPanel
 
     public void zoomRegion() {
         if (selection.state == SelectionState.RECTANGLE) {
-            zoomer.setResolution(getWidth(), getHeight());
+            updateResolution();
             zoomer.setBounds(selection.getrMin(),
                              selection.getrMax(),
                              selection.getiMin(),

@@ -70,12 +70,14 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
         JButton zoomInButton = new JButton("Zoom in");
         JButton zoomOutButton = new JButton("Zoom out");
         JButton zoomRegionButton = new JButton("Zoom region");
+        JButton generateButton = new JButton("Generate");
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(zoomInButton);
         buttonPanel.add(zoomOutButton);
         buttonPanel.add(zoomRegionButton);
+        buttonPanel.add(generateButton);
 
         zoomInButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -90,6 +92,12 @@ public class MandelbrotViewer implements ComplexGridPositionListener {
         zoomRegionButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     mandelPanel.zoomRegion();
+                }
+            });
+        generateButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mandelPanel.updateResolution();
+                    mandelPanel.generateAndDisplayFractal();
                 }
             });
         return buttonPanel;
