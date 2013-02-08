@@ -14,6 +14,10 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
     private MandelbrotPanel mandelPanel;
     private JLabel statusLabel;
 
+    JButton zoomInButton;
+    JButton zoomOutButton;
+    JButton zoomRegionButton;
+
     private static final double RMINSTART = -2.5;
     private static final double RMAXSTART = 1;
     private static final double IMINSTART = -1;
@@ -67,10 +71,14 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
 
     private JPanel createButtonPanel() {
 
-        JButton zoomInButton = new JButton("Zoom in");
-        JButton zoomOutButton = new JButton("Zoom out");
-        JButton zoomRegionButton = new JButton("Zoom region");
+        zoomInButton = new JButton("Zoom in");
+        zoomOutButton = new JButton("Zoom out");
+        zoomRegionButton = new JButton("Zoom region");
         JButton generateButton = new JButton("Generate");
+
+        zoomInButton.setEnabled(false);
+        zoomOutButton.setEnabled(false);
+        zoomRegionButton.setEnabled(false);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
@@ -105,5 +113,25 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
 
     public void mousePositionUpdate(Complex c) {
         statusLabel.setText(c.toString());
+    }
+
+    public void selectionUpdate(MandelbrotPanel.SelectionState state) {
+        switch (state) {
+        case NONE:
+            zoomInButton.setEnabled(false);
+            zoomOutButton.setEnabled(false);
+            zoomRegionButton.setEnabled(false);
+            break;
+        case POINT:
+            zoomInButton.setEnabled(true);
+            zoomOutButton.setEnabled(true);
+            zoomRegionButton.setEnabled(false);
+            break;
+        case RECTANGLE:
+            zoomInButton.setEnabled(true);
+            zoomOutButton.setEnabled(true);
+            zoomRegionButton.setEnabled(true);
+            break;
+        }
     }
 }

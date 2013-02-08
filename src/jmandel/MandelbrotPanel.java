@@ -20,7 +20,7 @@ public class MandelbrotPanel extends JPanel
     private MandelbrotZoomer zoomer;
     private ArrayList<MandelbrotPanelListener> listeners;
 
-    private enum SelectionState { NONE, POINT, RECTANGLE };
+    enum SelectionState { NONE, POINT, RECTANGLE };
     private Selection selection;
     private int lastButtonDown;
 
@@ -91,6 +91,21 @@ public class MandelbrotPanel extends JPanel
         }
     }
 
+    private void notifySelection() {
+        for (MandelbrotPanelListener l : listeners) {
+            l.selectionUpdate(selection.state);
+        }
+    }
+
+    private void startSelection(Point p) {
+        if (lastButtonDown == MouseEvent.BUTTON3) {
+            selection.deselect();
+        } else {
+            selection.start(p);
+        }
+        repaint();
+    }
+
     private void extendSelection(Point p) {
         if (lastButtonDown == MouseEvent.BUTTON1) {
             selection.extend(p);
@@ -110,17 +125,13 @@ public class MandelbrotPanel extends JPanel
     public void mouseExited(MouseEvent e) {}
 
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            selection.deselect();
-        } else {
-            selection.start(e.getPoint());
-        }
         lastButtonDown = e.getButton();
-        repaint();
+        startSelection(e.getPoint());
     }
 
     public void mouseReleased(MouseEvent e) {
         extendSelection(e.getPoint());
+        notifySelection();
     }
 
     @Override
