@@ -167,53 +167,63 @@ public class MandelbrotPanel extends JPanel
             state = SelectionState.POINT;
         }
 
-        private boolean distantEnough(Point p1, Point p2) {
-            return Math.abs(p1.x - p2.x) > 1 &&
-                Math.abs(p1.y - p2.y) > 1;
-        }
-
         public void extend(Point p) {
-            Complex endCoord = pointToComplexCoordinates(p);
-            double newCenterReal;
-            double newCenterImag;
+            if (state == SelectionState.NONE)
+                return;
 
             endPoint = p;
+            updateWidthAndHeight(startPoint, endPoint, false);
+            updateCenter(startPoint, endPoint);
 
-            if (!distantEnough(startPoint, endPoint))
-                state = SelectionState.POINT;
-            else if (state != SelectionState.NONE) {
-                if (endCoord.real < center.real) {
-                    width = Math.abs(center.real + width / 2 - endCoord.real);
-                    newCenterReal = endCoord.real + width / 2;
-                } else {
-                    width = Math.abs(center.real - width / 2 - endCoord.real);
-                    newCenterReal = endCoord.real - width / 2;
-                }
-                if (endCoord.imag < center.imag) {
-                    height = Math.abs(center.imag + height / 2 - endCoord.imag);
-                    newCenterImag = endCoord.imag + height / 2;
-                } else {
-                    height = Math.abs(center.imag - height / 2 - endCoord.imag);
-                    newCenterImag = endCoord.imag - height / 2;
-                }
-                center = new Complex(newCenterReal, newCenterImag);
+            if (distantEnough(startPoint, endPoint))
                 state = SelectionState.RECTANGLE;
-            }
-
+            else
+                state = SelectionState.POINT;
         }
 
         public void extendWithFixedCenter(Point p) {
-            Complex endCoord = pointToComplexCoordinates(p);
+            if (state == SelectionState.NONE)
+                return;
 
             endPoint = p;
+            updateWidthAndHeight(startPoint, endPoint, true);
 
-            if (!distantEnough(startPoint, endPoint))
-                state = SelectionState.POINT;
-            else if (state != SelectionState.NONE) {
-                width = Math.abs(endCoord.real - center.real) * 2;
-                height = Math.abs(endCoord.imag - center.imag) * 2;
+            if (distantEnough(startPoint, endPoint))
                 state = SelectionState.RECTANGLE;
+            else
+                state = SelectionState.POINT;
+        }
+
+        private boolean distantEnough(Point p1, Point p2) {
+            return Math.abs(p1.x - p2.x) > 1 && Math.abs(p1.y - p2.y) > 1;
+        }
+
+        private void updateWidthAndHeight(Point p1, Point p2,
+                                          boolean fixedCenter) {
+            Complex z1 = pointToComplexCoordinates(p1);
+            Complex z2 = pointToComplexCoordinates(p2);
+            width = Math.abs(z1.real - z2.real);
+            height = Math.abs(z1.imag - z2.imag);
+            if (fixedCenter) {
+                width *= 2;
+                height *= 2;
             }
+        }
+
+        private void updateCenter(Point p1, Point p2) {
+            Complex z1 = pointToComplexCoordinates(p1);
+            Complex z2 = pointToComplexCoordinates(p2);
+            double realCenter;
+            double imagCenter;
+            if (p1.x < p2.x)
+                realCenter = z1.real + width / 2;
+            else
+                realCenter = z2.real + width / 2;
+            if (p1.y < p2.y)
+                imagCenter = z2.imag + height / 2;
+            else
+                imagCenter = z1.imag + height / 2;
+            center = new Complex(realCenter, imagCenter);
         }
 
         public void deselect() {
