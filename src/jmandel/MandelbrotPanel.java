@@ -159,6 +159,8 @@ public class MandelbrotPanel extends JPanel
         private Point startPoint;
         private Point endPoint;
 
+        private final double aspectRatio = getWidth()/(double)getHeight();
+
         public Selection() {
             state = SelectionState.NONE;
         }
@@ -180,8 +182,8 @@ public class MandelbrotPanel extends JPanel
                 return;
 
             endPoint = p;
-            updateWidthAndHeight(startPoint, endPoint, false);
-            updateCenter(startPoint, endPoint);
+            updateWidthAndHeight(false);
+            updateCenter();
 
             if (distantEnough(startPoint, endPoint))
                 state = SelectionState.RECTANGLE;
@@ -194,7 +196,7 @@ public class MandelbrotPanel extends JPanel
                 return;
 
             endPoint = p;
-            updateWidthAndHeight(startPoint, endPoint, true);
+            updateWidthAndHeight(true);
 
             if (distantEnough(startPoint, endPoint))
                 state = SelectionState.RECTANGLE;
@@ -203,32 +205,39 @@ public class MandelbrotPanel extends JPanel
         }
 
         private boolean distantEnough(Point p1, Point p2) {
-            return Math.abs(p1.x - p2.x) > 1 && Math.abs(p1.y - p2.y) > 1;
+            return p1.distance(p2) > 2;
         }
 
-        private void updateWidthAndHeight(Point p1, Point p2,
-                                          boolean fixedCenter) {
-            Complex z1 = pointToComplexCoordinates(p1);
-            Complex z2 = pointToComplexCoordinates(p2);
+        private void updateWidthAndHeight(boolean fixedCenter) {
+            Complex z1 = pointToComplexCoordinates(startPoint);
+            Complex z2 = pointToComplexCoordinates(endPoint);
+
             width = Math.abs(z1.real - z2.real);
             height = Math.abs(z1.imag - z2.imag);
+
+            if (width > height * aspectRatio)
+                height = width / aspectRatio;
+            else
+                width = height * aspectRatio;
+
             if (fixedCenter) {
                 width *= 2;
                 height *= 2;
             }
         }
 
-        private void updateCenter(Point p1, Point p2) {
-            Complex z1 = pointToComplexCoordinates(p1);
-            Complex z2 = pointToComplexCoordinates(p2);
+        private void updateCenter() {
+            Complex z1 = pointToComplexCoordinates(startPoint);
+            Complex z2 = pointToComplexCoordinates(endPoint);
             double realCenter;
             double imagCenter;
-            if (p1.x < p2.x)
+
+            if (startPoint.x < endPoint.x)
                 realCenter = z1.real + width / 2;
             else
-                realCenter = z2.real + width / 2;
-            if (p1.y < p2.y)
-                imagCenter = z2.imag + height / 2;
+                realCenter = z1.real - width / 2;
+            if (startPoint.y < endPoint.y)
+                imagCenter = z1.imag - height / 2;
             else
                 imagCenter = z1.imag + height / 2;
             center = new Complex(realCenter, imagCenter);
