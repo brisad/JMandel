@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 public class Mandelbrot {
 
-    private final static int DEF_NUM_ITER = 100;
+    public final static int DEFAULT_NUM_ITERATIONS = 100;
     private final ComplexGrid grid;
 
     public Mandelbrot(ComplexGrid grid) {
@@ -13,13 +13,17 @@ public class Mandelbrot {
     }
 
     public MandelbrotResult generate() {
+        return generate(DEFAULT_NUM_ITERATIONS);
+    }
+
+    public MandelbrotResult generate(int noIterations) {
         Dimension d = grid.getSize();
         int result[][] = new int[d.height][d.width];
 
         for (int y = 0; y < d.height; y++) {
             for (int x = 0; x < d.width; x++) {
                 Complex c = grid.index(x, y);
-                result[y][x] = iterations(c, DEF_NUM_ITER);
+                result[y][x] = iterations(c, noIterations);
             }
         }
         return new MandelbrotResult(result);
@@ -45,6 +49,6 @@ public class Mandelbrot {
     }
 
     public static boolean inSet(Complex c) {
-        return iterations(c, DEF_NUM_ITER) == 0;
+        return iterations(c, DEFAULT_NUM_ITERATIONS) == 0;
     }
 }

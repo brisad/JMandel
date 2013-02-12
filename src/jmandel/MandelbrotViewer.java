@@ -74,6 +74,8 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         zoomInButton = new JButton("Zoom in");
         zoomOutButton = new JButton("Zoom out");
         zoomRegionButton = new JButton("Zoom region");
+        JButton increaseIterationsButton = new JButton("2xIter.");
+        JButton decreaseIterationsButton = new JButton("0.5xIter.");
         JButton generateButton = new JButton("Generate");
 
         zoomInButton.setEnabled(false);
@@ -85,6 +87,8 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         buttonPanel.add(zoomInButton);
         buttonPanel.add(zoomOutButton);
         buttonPanel.add(zoomRegionButton);
+        buttonPanel.add(increaseIterationsButton);
+        buttonPanel.add(decreaseIterationsButton);
         buttonPanel.add(generateButton);
 
         zoomInButton.addActionListener(new ActionListener() {
@@ -100,6 +104,18 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         zoomRegionButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     mandelPanel.zoomRegion();
+                }
+            });
+        increaseIterationsButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mandelPanel.increaseIterations();
+                    mandelPanel.generateAndDisplayFractal();
+                }
+            });
+        decreaseIterationsButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mandelPanel.decreaseIterations();
+                    mandelPanel.generateAndDisplayFractal();
                 }
             });
         generateButton.addActionListener(new ActionListener() {

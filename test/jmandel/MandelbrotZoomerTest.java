@@ -74,6 +74,30 @@ public class MandelbrotZoomerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void setIterations_GenerateDefaultGrid_GeneratesCorrectFractal() {
+        zoomer.setIterations(2);
+        zoomer.generate();
+        MandelbrotResult expected = new Mandelbrot(defaultGrid).generate(2);
+        MandelbrotResult actual = zoomer.getMandelbrotResult();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getIterations_DefaultIterations_ReturnsMandelbrotDefault() {
+        int expected = Mandelbrot.DEFAULT_NUM_ITERATIONS;
+        int actual = zoomer.getIterations();
+        assertEquals("Not same number of iterations", expected, actual);
+    }
+
+    @Test
+    public void getIterations_SetIterations_ReturnsSetIterations() {
+        zoomer.setIterations(42);
+        int expected = 42;
+        int actual = zoomer.getIterations();
+        assertEquals("Not same number of iterations", expected, actual);
+    }
+
     public static void main(String[] args) {
         org.junit.runner.JUnitCore.main("MandelbrotZoomerTest");
     }

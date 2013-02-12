@@ -4,6 +4,7 @@ public class MandelbrotZoomer {
 
     private ComplexGrid grid;
     private MandelbrotResult result;
+    private int noIterations;
 
     public MandelbrotZoomer(ComplexGrid grid) {
         this.grid = grid;
@@ -39,8 +40,22 @@ public class MandelbrotZoomer {
         return grid;
     }
 
+    public void setIterations(int noIterations) {
+        this.noIterations = noIterations;
+    }
+
+    public int getIterations() {
+        if (noIterations > 0)
+            return noIterations;
+        else
+            return Mandelbrot.DEFAULT_NUM_ITERATIONS;
+    }
+
     public void generate() {
-        result = new Mandelbrot(grid).generate();
+        if (noIterations > 0)
+            result = new Mandelbrot(grid).generate(noIterations);
+        else
+            result = new Mandelbrot(grid).generate();
     }
 
     public MandelbrotResult getMandelbrotResult() {

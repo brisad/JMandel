@@ -53,6 +53,23 @@ public class MandelbrotTest {
     }
 
     @Test
+    public void generate_WithIterations_ReturnsCorrectPoint() {
+        Mandelbrot m = new Mandelbrot(new ComplexGrid(-1, 1, -1, 1, 3, 3));
+        MandelbrotResult result = m.generate(2);
+        assertEquals("Failed at (0, 0)", 0, result.index(0, 0));
+        assertEquals("Failed at (0, 1)", 0, result.index(0, 1));
+        assertEquals("Failed at (0, 2)", 0, result.index(0, 2));
+
+        assertEquals("Failed at (1, 0)", 0, result.index(1, 0));
+        assertEquals("Failed at (1, 1)", 0, result.index(1, 1));
+        assertEquals("Failed at (1, 2)", 0, result.index(1, 2));
+
+        assertEquals("Failed at (2, 0)", 2, result.index(2, 0));
+        assertEquals("Failed at (2, 1)", 2, result.index(2, 1));
+        assertEquals("Failed at (2, 2)", 2, result.index(2, 2));
+    }
+
+    @Test
     public void generate_OnePoint_ReturnsCorrectNumberOfIterations() {
         Mandelbrot m = new Mandelbrot(new ComplexGrid(.5, .5, .5, .5, 1, 1));
         MandelbrotResult result = m.generate();
