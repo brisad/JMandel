@@ -180,40 +180,35 @@ public class MandelbrotPanel extends JPanel
         public void extend(Point p) {
             if (state == SelectionState.NONE)
                 return;
-
             endPoint = p;
             updateWidthAndHeight(false);
             updateCenter();
-
-            if (distantEnough(startPoint, endPoint))
-                state = SelectionState.RECTANGLE;
-            else
-                state = SelectionState.POINT;
         }
 
         public void extendWithFixedCenter(Point p) {
             if (state == SelectionState.NONE)
                 return;
-
             endPoint = p;
             updateWidthAndHeight(true);
-
-            if (distantEnough(startPoint, endPoint))
-                state = SelectionState.RECTANGLE;
-            else
-                state = SelectionState.POINT;
         }
 
         private boolean distantEnough(Point p1, Point p2) {
-            return p1.distance(p2) > 2;
+            return p1.distance(p2) > 4;
         }
 
         private void updateWidthAndHeight(boolean fixedCenter) {
             Complex z1 = pointToComplexCoordinates(startPoint);
             Complex z2 = pointToComplexCoordinates(endPoint);
 
-            width = Math.abs(z1.real - z2.real);
-            height = Math.abs(z1.imag - z2.imag);
+            if (distantEnough(startPoint, endPoint)) {
+                state = SelectionState.RECTANGLE;
+                width = Math.abs(z1.real - z2.real);
+                height = Math.abs(z1.imag - z2.imag);
+            } else {
+                state = SelectionState.POINT;
+                width = 0;
+                height = 0;
+            }
 
             if (width > height * aspectRatio)
                 height = width / aspectRatio;
