@@ -7,10 +7,16 @@ import java.awt.Dimension;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MandelbrotViewer implements MandelbrotPanelListener {
 
+    private JFrame frame;
     private MandelbrotPanel mandelPanel;
     private JLabel statusLabel;
 
@@ -35,7 +41,7 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
 
     private void createAndShowGUI() {
 
-        JFrame frame = new JFrame("JMandel");
+        frame = new JFrame("JMandel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mandelPanel = new MandelbrotPanel();
@@ -77,6 +83,7 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         JButton increaseIterationsButton = new JButton("2xIter.");
         JButton decreaseIterationsButton = new JButton("0.5xIter.");
         JButton generateButton = new JButton("Generate");
+        JButton saveImageButton = new JButton("Save image");
 
         zoomInButton.setEnabled(false);
         zoomOutButton.setEnabled(false);
@@ -90,6 +97,7 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         buttonPanel.add(increaseIterationsButton);
         buttonPanel.add(decreaseIterationsButton);
         buttonPanel.add(generateButton);
+        buttonPanel.add(saveImageButton);
 
         zoomInButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -122,6 +130,25 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
                 public void actionPerformed(ActionEvent e) {
                     mandelPanel.updateResolution();
                     mandelPanel.generateAndDisplayFractal();
+                }
+            });
+        saveImageButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    BufferedImage image =
+                        (BufferedImage)mandelPanel.getFractalImage();
+                    JFileChooser chooser = new JFileChooser();
+                    FileFilter filter =
+                        new FileNameExtensionFilter("PNG file", "png");
+                    chooser.setFileFilter(filter);
+                    chooser.setAcceptAllFileFilterUsed(false);
+
+                    int retval = chooser.showSaveDialog(frame);
+                    if (retval == JFileChooser.APPROVE_OPTION) {
+                        File saveFile = chooser.getSelectedFile();
+                        try {
+                            ImageIO.write(image, "png", saveFile);
+                        } catch (IOException exception) {}
+                    }
                 }
             });
         return buttonPanel;

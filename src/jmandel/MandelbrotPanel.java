@@ -47,6 +47,10 @@ public class MandelbrotPanel extends JPanel
         repaint();
     }
 
+    public Image getFractalImage() {
+        return fractalImage;
+    }
+
     public void addMandelbrotPanelListener(MandelbrotPanelListener l) {
         listeners.add(l);
     }
