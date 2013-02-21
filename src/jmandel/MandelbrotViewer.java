@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JOptionPane;
 
 public class MandelbrotViewer implements MandelbrotPanelListener {
 
@@ -145,12 +146,50 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
                     int retval = chooser.showSaveDialog(frame);
                     if (retval == JFileChooser.APPROVE_OPTION) {
                         File saveFile = chooser.getSelectedFile();
+                        boolean created;
+                        try {
+                            created = saveFile.createNewFile();
+                        } catch (IOException ex) {
+                            error("Could not create file: " + saveFile,
+                                  "Write Error");
+                            return;
+                        }
+
+                        if (!created) {
+                            String message = "File already exists: " +
+                                saveFile + ". Overwrite?";
+                            if (!confirm(message, "Overwrite file"))
+                                return;
+                        }
+
+                        if (!saveFile.canWrite()) {
+                            error("Can't write to file: " + saveFile,
+                                  "Write Error");
+                            return;
+                        }
+
                         try {
                             ImageIO.write(image, "png", saveFile);
-                        } catch (IOException exception) {}
+                        } catch (IOException exception) {
+                            error("Could not write to file: "
+                                  + saveFile,
+                                  "Write Error");
+                        }
                     }
                 }
+
+                private void error(String message, String title) {
+                    JOptionPane.showMessageDialog(frame, message, title,
+                                                  JOptionPane.ERROR_MESSAGE);
+                }
+
+                private boolean confirm(String message, String title) {
+                    int ret = JOptionPane.showConfirmDialog(frame,
+                                  message, title, JOptionPane.YES_NO_OPTION);
+                    return ret == JOptionPane.YES_OPTION;
+                }
             });
+
         return buttonPanel;
     }
 
