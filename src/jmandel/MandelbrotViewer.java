@@ -37,7 +37,11 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
     private static final double ZOUTFACTOR = .5;
 
     public static void main(String[] args) {
-        new MandelbrotViewer().createAndShowGUI();
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    new MandelbrotViewer().createAndShowGUI();
+                }
+            });
     }
 
     private void createAndShowGUI() {
