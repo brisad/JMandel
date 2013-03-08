@@ -88,12 +88,8 @@ public class MandelbrotPanel extends JPanel
         }
     }
 
-    public void increaseIterations() {
-        zoomer.setIterations(zoomer.getIterations() * 2);
-    }
-
-    public void decreaseIterations() {
-        zoomer.setIterations(zoomer.getIterations() / 2);
+    public void setIterations(int iterations) {
+        zoomer.setIterations(iterations);
     }
 
     public void mouseMoved(MouseEvent e) {

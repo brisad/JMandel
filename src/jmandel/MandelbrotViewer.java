@@ -1,10 +1,12 @@
 package jmandel;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.border.BevelBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -35,6 +37,8 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
 
     private static final double ZINFACTOR = 2;
     private static final double ZOUTFACTOR = .5;
+
+    private static final int START_NUM_ITERATIONS = 100;
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -77,6 +81,7 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         frame.setVisible(true);
 
         mandelPanel.init(RMINSTART, RMAXSTART, IMINSTART, IMAXSTART);
+        mandelPanel.setIterations(START_NUM_ITERATIONS);
         mandelPanel.generateAndDisplayFractal();
     }
 
@@ -85,8 +90,6 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         zoomInButton = new JButton("Zoom in");
         zoomOutButton = new JButton("Zoom out");
         zoomRegionButton = new JButton("Zoom region");
-        JButton increaseIterationsButton = new JButton("2xIter.");
-        JButton decreaseIterationsButton = new JButton("0.5xIter.");
         JButton generateButton = new JButton("Generate");
         JButton saveImageButton = new JButton("Save image");
 
@@ -99,8 +102,8 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
         buttonPanel.add(zoomInButton);
         buttonPanel.add(zoomOutButton);
         buttonPanel.add(zoomRegionButton);
-        buttonPanel.add(increaseIterationsButton);
-        buttonPanel.add(decreaseIterationsButton);
+        final JSpinner iterationSpinner = addIterationSpinner(buttonPanel,
+                                                              "Iterations");
         buttonPanel.add(generateButton);
         buttonPanel.add(saveImageButton);
 
@@ -119,15 +122,12 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
                     mandelPanel.zoomRegion();
                 }
             });
-        increaseIterationsButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    mandelPanel.increaseIterations();
-                    mandelPanel.generateAndDisplayFractal();
-                }
-            });
-        decreaseIterationsButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    mandelPanel.decreaseIterations();
+        iterationSpinner.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    SpinnerNumberModel m =
+                        (SpinnerNumberModel)iterationSpinner.getModel();
+                    int iterations = m.getNumber().intValue();
+                    mandelPanel.setIterations(iterations);
                     mandelPanel.generateAndDisplayFractal();
                 }
             });
@@ -195,6 +195,27 @@ public class MandelbrotViewer implements MandelbrotPanelListener {
             });
 
         return buttonPanel;
+    }
+
+    private JSpinner addIterationSpinner(Container c, String label) {
+        JPanel panel = new JPanel();
+        JLabel spinLabel = new JLabel(label);
+        panel.add(spinLabel);
+
+        JSpinner spinner = new JSpinner(
+            new SpinnerNumberModel(START_NUM_ITERATIONS, 1, null, 10));
+        // Don't show a thousands separator
+        JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#");
+        spinner.setEditor(editor);
+        editor.getTextField().setColumns(4);
+
+        spinLabel.setLabelFor(spinner);
+        panel.add(spinner);
+        // Restrict width of panel
+        panel.setMaximumSize(panel.getPreferredSize());
+        c.add(panel);
+
+        return spinner;
     }
 
     public void mousePositionUpdate(Complex c) {
